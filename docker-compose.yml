@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  pg-node:
+    build:
+      context: .
+      dockerfile: postgres.Dockerfile
+    networks:
+      - pgnet
+    environment:
+      PRIVNET: 192.168.46.0/27
+      CLUSTERCONF: /var/run/cluster_members
+    init: true
+    volumes:
+      - ./cluster_members:/var/run/cluster_members
+
+networks:
+  pgnet:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.46.0/27
